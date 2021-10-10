@@ -8,3 +8,26 @@ export function getDisplayedValue(value, children) {
 
   return selectedChild.props.children;
 }
+
+export function resizeSelect(sel) {
+  let tempSelect = document.createElement('select');
+  let tempOption = document.createElement('option');
+
+  // Replicate important styling.
+  tempOption.textContent = sel.options[sel.selectedIndex].text;
+  const padding = window.getComputedStyle(sel).getPropertyValue('padding');
+  const height = window.getComputedStyle(sel).getPropertyValue('height');
+  tempSelect.style.cssText += `
+      visibility: hidden;
+      position: fixed;
+      padding: ${padding};
+      height: ${height};
+      `;
+  tempSelect.appendChild(tempOption);
+  sel.after(tempSelect);
+  
+  const tempSelectWidth = tempSelect.getBoundingClientRect().width;
+  sel.style.width = `${tempSelectWidth}px`;
+  tempSelect.remove();
+}
+
